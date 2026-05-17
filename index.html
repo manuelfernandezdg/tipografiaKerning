@@ -25,10 +25,13 @@
     <div class="section-title">Importar fuente de Google Fonts</div>
     <textarea class="font-url-input" id="font-url-input"
       placeholder="Pegá la URL del @import:&#10;https://fonts.googleapis.com/css2?family=..."></textarea>
-    <button class="import-btn" onclick="importFont()">↳ Cargar fuente</button>
+    
     <div class="import-status" id="import-status"></div>
   
     <div class="section-title" style="margin-top:16px;">font-family</div>
+    
+    <div class="import-status" id="family-hint" style="margin-top:5px;">Escribí el nombre exácto de la fuente, tal cual aparece en Google Fonts en font-family: "Nombre";</div>
+
     <input
       type="text"
       id="font-family-input"
@@ -36,8 +39,9 @@
       placeholder="Ej: Playfair Display"
       oninput="applyFontFamily()"
     >
-    <div class="import-status" id="family-hint" style="margin-top:5px;">Escribí el nombre exácto de la fuente, tal cual aparece en Google Fonts en font-family: "Nombre";</div>
-  
+    
+    <button class="import-btn" onclick="importFont()">↳ Cargar fuente</button>
+
     <div class="section-title">Tamaño y peso</div>
     <div class="ctrl">
       <div class="ctrl-label">
@@ -126,8 +130,8 @@
       <!-- TAB TITULAR -->
       <div class="tab-content active" id="tab-headline">
         <div class="preview-bg" id="preview-bg">
-          <div class="editable-headline" id="headline-el" contenteditable="true" spellcheck="false">Televisión &amp; Workflow</div>
-          <span class="editable-hint">← editable</span>
+          <div class="editable-headline" id="headline-el" contenteditable="true" spellcheck="false">Explorador de Kerning</div>
+          <span class="editable-hint">← editame</span>
         </div>
         <div class="metrics-strip">
           <div class="metric">
