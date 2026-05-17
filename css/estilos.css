@@ -122,11 +122,11 @@
   .import-btn:active { transform: scale(0.98); }
  
   .import-status {
-    font-size: 1rem;
+    font-size: 0.8rem;
     margin-top: 6px;
     
     font-family: var(--mono);
-    color: var(--text3);
+    color: var(--accent);
   }
  
   .import-status.ok { color: var(--accent); }
@@ -146,7 +146,7 @@
   }
  
   .font-family-input::placeholder { color: var(--text3); }
-  .font-family-input:focus { border-color: var(--border2); }
+  .font-family-input:focus { border-color: var(--accent); }
   .font-family-input.active { border-color: var(--accent); }
  
   .ctrl { margin-bottom: 14px; }
@@ -174,6 +174,7 @@
   }
  
   input[type=range] {
+    appearance: none;
     -webkit-appearance: none;
     width: 100%;
     height: 3px;
@@ -269,7 +270,11 @@
     margin-top: 4px;
   }
  
-  .reset-btn:hover { border-color: var(--border2); color: var(--text2); }
+  .reset-btn:hover {
+    border-color: var(--accent);
+    background-color: var(--accent);
+    color: var(--bg);
+  }
  
   main {
     display: flex;

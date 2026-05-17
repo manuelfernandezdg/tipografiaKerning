@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kerning Explorer v.1.0.0</title>
   <link rel="stylesheet" href="./css/estilos.css">
+  <meta name="description" content="Una herramienta interactiva para explorar y experimentar con kerning, espaciado de caracteres y propiedades tipográficas avanzadas en CSS, con soporte para cargar cualquier fuente desde Google Fonts.">
+  <link rel="icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <script src="./js/app.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +36,7 @@
       placeholder="Ej: Playfair Display"
       oninput="applyFontFamily()"
     >
-    <div class="import-status" id="family-hint" style="margin-top:5px;">Escribí el nombre exacto de la fuente.</div>
+    <div class="import-status" id="family-hint" style="margin-top:5px;">Escribí el nombre exácto de la fuente, tal cual aparece en Google Fonts en font-family: "Nombre";</div>
   
     <div class="section-title">Tamaño y peso</div>
     <div class="ctrl">
@@ -100,7 +105,7 @@
     <select id="theme-select" onchange="updateTheme()">
       <option value="dark">Oscuro</option>
       <option value="light">Claro</option>
-      <option value="cream">Papel crema</option>
+      <option value="cream">Papel</option>
     </select>
   
     <div style="margin-top: 20px;">
