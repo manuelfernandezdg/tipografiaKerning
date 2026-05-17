@@ -204,9 +204,9 @@
   function updateTheme() {
     const t = document.getElementById('theme-select').value;
     const themes = {
-      dark:  { bg: '#18181a', text: '#f0efe8' },
-      light: { bg: '#ffffff', text: '#111111' },
-      cream: { bg: '#f5f0e8', text: '#2a2218' },
+      dark:  { bg: 'hsl(214, 25%, 11%)', text: 'hsl(215, 25%, 85%)' },
+      light: { bg: 'hsl(215, 25%, 85%)', text: 'hsl(214, 25%, 11%)' },
+      cream: { bg: 'hsl(36, 44%, 76%)', text: 'rgb(42, 34, 24)' },
     };
     const c = themes[t];
     ['preview-bg', 'body-bg'].forEach(id => {
