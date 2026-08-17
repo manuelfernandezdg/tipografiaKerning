@@ -3,214 +3,341 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kerning Explorer v.1.0.0</title>
-  <link rel="stylesheet" href="./css/estilos.css">
+  <title>Kerning Explorer</title>
+  <link rel="stylesheet" href="css/estilos.css?v=11">
   <meta name="description" content="Una herramienta interactiva para explorar y experimentar con kerning, espaciado de caracteres y propiedades tipográficas avanzadas en CSS, con soporte para cargar cualquier fuente desde Google Fonts.">
-  <link rel="icon" href="favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <script src="./js/app.js" defer></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" href="favicon.ico?v=1">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=1">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=1">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=1">
+  <script src="./js/app.js?v=12" defer></script>
 </head>
 <body>
-  <header>
-    <div class="logo">Kerning<span>/</span>Explorer</div>
-    <div class="sep"></div>
-    <div class="font-name-display">Fuente activa: <strong id="active-font-name">sistema (sans-serif)</strong></div>
-  </header>
-  
-  <aside>
-    <div class="section-title">Importar fuente de Google Fonts</div>
-    <textarea class="font-url-input" id="font-url-input"
-      placeholder="Pegá la URL del @import:&#10;https://fonts.googleapis.com/css2?family=..."></textarea>
-    
-    <div class="import-status" id="import-status"></div>
-  
-    <div class="section-title" style="margin-top:16px;">font-family</div>
-    
-    <div class="import-status" id="family-hint" style="margin-top:5px;">Escribí el nombre exácto de la fuente, tal cual aparece en Google Fonts en font-family: "Nombre";</div>
-
-    <input
-      type="text"
-      id="font-family-input"
-      class="font-family-input"
-      placeholder="Ej: Playfair Display"
-      oninput="applyFontFamily()"
-    >
-    
-    <button class="import-btn" onclick="importFont()">↳ Cargar fuente</button>
-
-    <div class="section-title">Tamaño y peso</div>
-    <div class="ctrl">
-      <div class="ctrl-label">
-        <span>font-size</span>
-        <span class="val" id="val-fs">64px</span>
-      </div>
-      <input type="range" id="sl-fs" min="18" max="120" step="2" value="64" oninput="updatePreview()">
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label">
-        <span>font-weight</span>
-        <span class="val" id="val-fw">700</span>
-      </div>
-      <input type="range" id="sl-fw" min="100" max="900" step="100" value="700" oninput="updatePreview()">
-    </div>
-  
-    <div class="section-title">Espaciado</div>
-    <div class="ctrl">
-      <div class="ctrl-label">
-        <span>letter-spacing</span>
-        <span class="val" id="val-ls">0.000em</span>
-      </div>
-      <input type="range" id="sl-ls" min="-0.12" max="0.35" step="0.005" value="0" oninput="updatePreview()">
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label">
-        <span>word-spacing</span>
-        <span class="val" id="val-ws">0.00em</span>
-      </div>
-      <input type="range" id="sl-ws" min="-0.1" max="0.5" step="0.01" value="0" oninput="updatePreview()">
-    </div>
-    <div class="ctrl">
-      <div class="ctrl-label">
-        <span>line-height</span>
-        <span class="val" id="val-lh">1.10</span>
-      </div>
-      <input type="range" id="sl-lh" min="0.8" max="2.2" step="0.05" value="1.1" oninput="updatePreview()">
-    </div>
-  
-    <div class="section-title">Propiedades CSS</div>
-    <div class="toggle-group">
-      <label class="toggle">
-        <input type="checkbox" id="tog-fk" checked onchange="updatePreview()">
-        <span class="toggle-track"></span>
-        <span class="toggle-label">font-kerning: normal</span>
-      </label>
-      <label class="toggle">
-        <input type="checkbox" id="tog-tr" onchange="updatePreview()">
-        <span class="toggle-track"></span>
-        <span class="toggle-label">text-rendering: optimizeLegibility</span>
-      </label>
-      <label class="toggle">
-        <input type="checkbox" id="tog-lig" checked onchange="updatePreview()">
-        <span class="toggle-track"></span>
-        <span class="toggle-label">font-variant-ligatures</span>
-      </label>
-      <label class="toggle">
-        <input type="checkbox" id="tog-onum" onchange="updatePreview()">
-        <span class="toggle-track"></span>
-        <span class="toggle-label">font-variant-numeric: oldstyle</span>
-      </label>
-    </div>
-  
-    <div class="section-title">Tema de fondo</div>
-    <select id="theme-select" onchange="updateTheme()">
+  <header class="header">
+    <button class="hamburger" id="hamburger-btn" aria-label="Abrir panel de controles">
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+    </button>
+    <div class="header__brand">Tipografía y Kerning</div>
+    <div class="header__sep"></div>
+    <label class="header__theme-label" for="theme-select">Tema:</label>
+    <select class="header__theme-select" id="theme-select">
       <option value="dark">Oscuro</option>
       <option value="light">Claro</option>
       <option value="cream">Papel</option>
+      <option value="custom">Personalizado</option>
     </select>
-  
-    <div style="margin-top: 20px;">
-      <button class="reset-btn" onclick="resetAll()">↺ Restablecer todo</button>
+    <div class="header__custom-colors" id="custom-colors">
+      <input type="color" id="custom-bg" value="#1a1a1a">
+      <input type="color" id="custom-text" value="#d8d8d8">
     </div>
-  </aside>
-  
-  <main>
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('headline', this)">Titular</button>
-      <button class="tab" onclick="switchTab('pairs', this)">Pares kerneados</button>
-      <button class="tab" onclick="switchTab('body', this)">Cuerpo de texto</button>
-      <button class="tab" onclick="switchTab('css', this)">CSS generado</button>
-    </div>
-  
-    <div class="preview-area">
-  
-      <!-- TAB TITULAR -->
-      <div class="tab-content active" id="tab-headline">
-        <div class="preview-bg" id="preview-bg">
-          <div class="editable-headline" id="headline-el" contenteditable="true" spellcheck="false">Explorador de Kerning</div>
-          <span class="editable-hint">← editame</span>
-        </div>
-        <div class="metrics-strip">
-          <div class="metric">
-            <div class="metric-label">letter-spacing</div>
-            <div class="metric-val" id="m-ls">0em</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">font-kerning</div>
-            <div class="metric-val" id="m-fk">normal</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">ligatures</div>
-            <div class="metric-val" id="m-lig">on</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">text-rendering</div>
-            <div class="metric-val" id="m-tr">auto</div>
-          </div>
+  </header>
+
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+
+  <aside class="sidebar" id="aside-panel" aria-label="Panel de controles tipográficos">
+    <section class="accordion" id="import-section">
+      <button class="accordion__toggle" aria-expanded="false">
+        <h2 class="sidebar__title">Importar fuente</h2>
+        <span class="accordion__icon">+</span>
+      </button>
+      <div class="accordion__body">
+        <textarea class="import__url" id="font-url-input"
+          placeholder="Pegá la URL del @import:&#10;https://fonts.googleapis.com/css2?family=..."></textarea>
+        <p class="import__status" id="import-status" role="status"></p>
+
+        <h2 class="sidebar__title">font-family</h2>
+        <input
+          type="text"
+          id="font-family-input"
+          class="import__family"
+          placeholder="Ej: Playfair Display"
+        >
+        <button class="import__btn">↳ Cargar fuente</button>
+
+        <h2 class="sidebar__title">O cargar fuente local</h2>
+        <div class="import__drop" id="drop-zone" role="button" tabindex="0" aria-label="Seleccionar archivo de fuente">
+          <span>Arrastrá un archivo .ttf, .otf o .woff2</span>
+          <span class="import__drop-hint">o hacé click para seleccionar</span>
+          <input type="file" id="font-file-input" accept=".ttf,.otf,.woff,.woff2" hidden>
         </div>
       </div>
-  
-      <!-- TAB PARES -->
-      <div class="tab-content" id="tab-pairs">
-        <div class="pairs-grid" id="pairs-grid"></div>
-        <div class="code-panel">
-          <div class="code-header"><span>Notas sobre pares kerneados</span></div>
-          <pre style="color: var(--text2);">Los pares kerneados son combinaciones de letras donde el espacio
+    </section>
+
+    <section class="sidebar__section">
+      <h2 class="sidebar__title">Tamaño y peso</h2>
+      <fieldset class="ctrl">
+        <legend class="ctrl__label">
+          <span>font-size</span>
+          <span class="ctrl__value" id="val-fs">3rem (48px)</span>
+        </legend>
+        <input type="range" id="sl-fs" min="10" max="120" step="1" value="48">
+      </fieldset>
+      <fieldset class="ctrl">
+        <legend class="ctrl__label">
+          <span>font-weight</span>
+          <span class="ctrl__value" id="val-fw">300</span>
+        </legend>
+        <input type="range" id="sl-fw" min="100" max="900" step="100" value="300">
+      </fieldset>
+    </section>
+
+    <section class="sidebar__section">
+      <h2 class="sidebar__title">Espaciado</h2>
+      <fieldset class="ctrl">
+        <legend class="ctrl__label">
+          <span>letter-spacing</span>
+          <span class="ctrl__value" id="val-ls">0em (0rem)</span>
+        </legend>
+        <input type="range" id="sl-ls" min="-0.12" max="0.35" step="0.005" value="0">
+      </fieldset>
+      <fieldset class="ctrl">
+        <legend class="ctrl__label">
+          <span>word-spacing</span>
+          <span class="ctrl__value" id="val-ws">0em (0rem)</span>
+        </legend>
+        <input type="range" id="sl-ws" min="-0.1" max="0.5" step="0.01" value="0">
+      </fieldset>
+      <fieldset class="ctrl">
+        <legend class="ctrl__label">
+          <span>line-height</span>
+          <span class="ctrl__value" id="val-lh">1.20</span>
+        </legend>
+        <input type="range" id="sl-lh" min="0.8" max="2.2" step="0.05" value="1.2">
+      </fieldset>
+    </section>
+
+    <section class="sidebar__section">
+      <h2 class="sidebar__title">Propiedades CSS</h2>
+      <fieldset class="toggle-group">
+        <legend class="sr-only">Propiedades CSS de tipografía</legend>
+        <label class="toggle">
+          <input class="toggle__input" type="checkbox" id="tog-fk" checked>
+          <span class="toggle__track"></span>
+          <span class="toggle__label">font-kerning: normal</span>
+          <span class="toggle__tip" data-tip="Activa las tablas de kerning embebidas en la fuente. El motor tipográfico ajusta automáticamente el espacio entre pares de letras específicos (como AV, To, We) para lograr una distribución visual más uniforme y legible.">?</span>
+        </label>
+        <label class="toggle">
+          <input class="toggle__input" type="checkbox" id="tog-tr">
+          <span class="toggle__track"></span>
+          <span class="toggle__label">text-rendering: optimizeLegibility</span>
+          <span class="toggle__tip" data-tip="Solicita al navegador priorizar la estética visual sobre la velocidad de renderizado. Activa kerning, ligaduras y espaciado óptimo. Ideal para titulares, pero puede afectar el rendimiento en textos largos.">?</span>
+        </label>
+        <label class="toggle">
+          <input class="toggle__input" type="checkbox" id="tog-lig" checked>
+          <span class="toggle__track"></span>
+          <span class="toggle__label">font-variant-ligatures</span>
+          <span class="toggle__tip" data-tip="Controla las ligaduras tipográficas: combinaciones de glyphs que se fusionan en un solo diseño (fi, fl, ffi). common-ligatures las activa; none las desactiva. Las ligaduras mejoran la legibilidad y la calidad estética del texto.">?</span>
+        </label>
+        <label class="toggle">
+          <input class="toggle__input" type="checkbox" id="tog-onum">
+          <span class="toggle__track"></span>
+          <span class="toggle__label">font-variant-numeric: oldstyle</span>
+          <span class="toggle__tip" data-tip="Activa los números de estilo antiguo (oldstyle-nums): dígitos con ascendentes y descendentes que se mezclan armónicamente con el texto corrido. A diferencia de los números de caja (lining), no todos tienen la misma altura.">?</span>
+        </label>
+      </fieldset>
+    </section>
+
+    <div class="actions">
+      <button class="actions__btn">↺ Restablecer</button>
+      <button class="actions__btn actions__btn--share">↗ Compartir</button>
+    </div>
+  </aside>
+
+  <main>
+    <nav class="tabs" role="tablist" aria-label="Vistas de preview">
+      <button class="tabs__item is-active" role="tab" aria-selected="true" aria-controls="tab-headline">Explorar</button>
+      <button class="tabs__item" role="tab" aria-selected="false" aria-controls="tab-pairs">Pares kerneados</button>
+      <button class="tabs__item" role="tab" aria-selected="false" aria-controls="tab-css">CSS generado</button>
+      <button class="tabs__item" role="tab" aria-selected="false" aria-controls="tab-tipo">Tipografía</button>
+      <button class="tabs__item" role="tab" aria-selected="false" aria-controls="tab-help">Ayuda</button>
+    </nav>
+
+    <div class="tabs__content">
+
+      <section class="tabs__panel is-active" id="tab-headline" role="tabpanel">
+        <div class="preview__selector">
+          <label class="preview__selector-label" for="element-select">Elemento activo:</label>
+          <select id="element-select">
+            <option value="h1">h1 — Titular</option>
+            <option value="h2">h2 — Subtítulo</option>
+            <option value="p">p — Párrafo</option>
+          </select>
+        </div>
+        <div class="preview__font-name" id="font-name-inline">sistema (sans-serif)</div>
+        <div class="preview__stage" id="preview-bg">
+          <h1 class="preview__el is-active" id="el-h1" contenteditable="true" spellcheck="false">Tipografía y Kerning</h1>
+          <h2 class="preview__el" id="el-h2" contenteditable="false" spellcheck="false">Una herramienta que te permite optimizar tu tipografía</h2>
+          <p class="preview__el" id="el-p" contenteditable="false" spellcheck="false">Elegir bien la tipografía es clave en una interfaz digital. No solo define la identidad visual de un producto, sino que impacta directamente en la legibilidad, la accesibilidad y la experiencia del usuario. Un buen sistema tipográfico equilibra estética y funcionalidad, asegurando que cada palabra se lea sin esfuerzo en cualquier dispositivo y contexto de uso.</p>
+          <span class="preview__hint" aria-hidden="true">← editame</span>
+        </div>
+        <div class="readability is-ok" id="rb-ls" role="status" aria-live="polite">
+          <div class="readability__status">
+            <div class="readability__icon"></div>
+            <div class="readability__level">letter-spacing</div>
+          </div>
+          <span class="readability__rec" id="rb-rec">Usá valores entre -0.01em y 0.02em en cuerpo de texto.</span>
+        </div>
+        <dl class="metrics">
+          <div class="metrics__item metrics__item--ls">
+            <dt class="metrics__label">letter-spacing</dt>
+            <dd class="metrics__value" id="m-ls">0em</dd>
+          </div>
+          <div class="metrics__item metrics__item--fk">
+            <dt class="metrics__label">font-kerning</dt>
+            <dd class="metrics__value" id="m-fk">normal</dd>
+          </div>
+          <div class="metrics__item metrics__item--lig">
+            <dt class="metrics__label">ligatures</dt>
+            <dd class="metrics__value" id="m-lig">on</dd>
+          </div>
+          <div class="metrics__item metrics__item--tr">
+            <dt class="metrics__label">text-rendering</dt>
+            <dd class="metrics__value" id="m-tr">auto</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="tabs__panel" id="tab-pairs" role="tabpanel">
+        <div class="empty" id="pairs-empty">
+          <strong class="empty__title">Sin fuente cargada</strong>
+          <p class="empty__text">Importá una fuente desde Google Fonts para ver la comparación de pares kerneados.</p>
+        </div>
+        <div class="pairs__grid" id="pairs-grid"></div>
+        <div class="code">
+          <div class="code__header">Notas sobre pares kerneados</div>
+          <pre class="code__pre">Los pares kerneados son combinaciones de letras donde el espacio
   óptico requiere ajuste. Ejemplos comunes:
-  
+
     AV  AW  AT  AY  — A seguida de diagonales
     To  Ty  Te  Tu  — T mayúscula + minúsculas
     WA  We  Wo     — diagonales con curvas
     fi  fl  ffi    — ligaduras (resueltas con font-variant-ligatures)
-  
-  Con <span style="color:#9b8dff">font-kerning: normal</span> el navegador aplica las tablas embebidas
-  en la fuente. La diferencia visual depende de la calidad tipográfica.</pre>
+
+Con font-kerning: normal el navegador aplica las tablas embebidas
+en la fuente. La diferencia visual depende de la calidad tipográfica.</pre>
         </div>
-      </div>
-  
-      <!-- TAB CUERPO -->
-      <div class="tab-content" id="tab-body">
-        <div class="readability-bar">
-          <div class="rb-item">
-            <span class="rb-label">letter-spacing</span>
-            <span class="rb-indicator" id="rb-ls">OK</span>
+      </section>
+
+      <section class="tabs__panel" id="tab-css" role="tabpanel">
+        <div class="code">
+          <div class="code__header">
+            <span class="code__header-text">CSS — titular (h1)</span>
+            <button class="code__copy">Copiar</button>
           </div>
-          <div class="rb-item" style="flex:1">
-            <span class="rb-label">Diagnóstico</span>
-            <span id="rb-rec" style="font-size:12px; color: var(--text2); font-family: var(--mono);">Usá valores entre -0.01em y 0.02em en cuerpo de texto.</span>
-          </div>
+          <pre class="code__pre" id="css-headline-out"></pre>
         </div>
-        <div class="body-preview-wrap" id="body-bg">
-          <div class="body-preview-text" id="body-el">
-            La tipografía es el arte de disponer el texto de forma que sea legible, claro y visualmente atractivo para el lector. El kerning, el tracking y el interlineado trabajan juntos para crear una textura de página equilibrada y armoniosa.<br><br>
-            En cuerpos de texto, el ojo necesita fluidez continua. El espaciado excesivo entre letras fragmenta las palabras y ralentiza la lectura. Confiar en las tablas de kerning de la fuente es, en la mayoría de los casos, la decisión más inteligente.<br><br>
-            Ligaduras en acción: fi fl ff ffi ffl — notá cómo resuelven colisiones ópticas. El par AV, To, WA también se beneficia del kerning automático.
+        <div class="code">
+          <div class="code__header">
+            <span class="code__header-text">CSS — subtítulo (h2)</span>
+            <button class="code__copy">Copiar</button>
           </div>
+          <pre class="code__pre" id="css-subheading-out"></pre>
         </div>
-      </div>
-  
-      <!-- TAB CSS -->
-      <div class="tab-content" id="tab-css">
-        <div class="code-panel" style="margin-bottom: 16px;">
-          <div class="code-header">
-            <span>CSS — titular</span>
-            <button class="copy-btn" id="copy-h-btn" onclick="copyCss('css-headline-out', 'copy-h-btn')">Copiar</button>
+        <div class="code">
+          <div class="code__header">
+            <span class="code__header-text">CSS — párrafo (p)</span>
+            <button class="code__copy">Copiar</button>
           </div>
-          <pre id="css-headline-out"></pre>
+          <pre class="code__pre" id="css-body-out"></pre>
         </div>
-        <div class="code-panel">
-          <div class="code-header">
-            <span>CSS — cuerpo de texto (recomendado)</span>
-            <button class="copy-btn" id="copy-b-btn" onclick="copyCss('css-body-out', 'copy-b-btn')">Copiar</button>
+      </section>
+
+      <section class="tabs__panel" id="tab-tipo" role="tabpanel">
+        <div class="help">
+          <h3 class="help__heading">Cómo elegir una tipografía para pantallas digitales</h3>
+          <p class="help__text">Elegir una tipografía para interfaces digitales no es solo una decisión estética. La legibilidad en pantalla depende de cómo fue diseñada la fuente: su anatomía, el peso de sus trazos, la altura de sus contadores y cómo se comporta a diferentes tamaños y densidades de píxeles.</p>
+
+          <h3 class="help__heading">Anatomía de la tipografía</h3>
+          <p class="help__text">Cada glifo tiene partes que afectan directamente la legibilidad en pantalla:</p>
+          <div class="tipo-grid">
+            <div class="tipo-card tipo-card--green">
+              <span class="tipo-card__label">Altura x</span>
+              <p class="tipo-card__text">Altura de las minúsculas. Una altura x alta mejora la legibilidad a tamaños pequeños, ya que las letras ocupan más píxeles verticales.</p>
+            </div>
+            <div class="tipo-card tipo-card--blue">
+              <span class="tipo-card__label">Contadores</span>
+              <p class="tipo-card__text">Espacios cerrados o abiertos dentro de letras como a, e, o, d. Contadores abiertos facilitan la distinguibilidad entre glifos similares.</p>
+            </div>
+            <div class="tipo-card tipo-card--green">
+              <span class="tipo-card__label">Ascendentes</span>
+              <p class="tipo-card__text">Parte de las letras que supera la altura x (b, d, f, h, k, l). Deben ser proporcionales para no crear saltos visuales incómodos.</p>
+            </div>
+            <div class="tipo-card tipo-card--blue">
+              <span class="tipo-card__label">Descendentes</span>
+              <p class="tipo-card__text">Parte que desciende por debajo de la línea base (g, j, p, q, y). Un descendente demasiado corto choca con la línea siguiente.</p>
+            </div>
+            <div class="tipo-card tipo-card--green">
+              <span class="tipo-card__label">Trazos</span>
+              <p class="tipo-card__text">Trazos verticales principales. En pantallas de baja densidad, trazos demasiado delgados desaparecen o se ven irregulares.</p>
+            </div>
+            <div class="tipo-card tipo-card--blue">
+              <span class="tipo-card__label">Serifas</span>
+              <p class="tipo-card__text">Terminaciones de los trazos. Las serifas finas se pierden en baja resolución; las de contraste alto generan aliasing.</p>
+            </div>
           </div>
-          <pre id="css-body-out"></pre>
+
+          <h3 class="help__heading">Rasgos clave para pantalla</h3>
+          <ul class="help__list">
+            <li class="help__item">Altura x alta: letras como la "o" ocupan más píxeles, mejorando la legibilidad en tamaños de cuerpo.</li>
+            <li class="help__item">Contraste moderado: demasiado contraste entre trazos gruesos y finos genera artefactos en baja densidad de píxeles.</li>
+            <li class="help__item">Aberturas amplias: letras como c, e, s con espacios abiertos se distinguen mejor a baja resolución.</li>
+            <li class="help__item">Proporción consistente: letras de ancho similar (monoespaciadas o con proporción humanista estable) reducen la carga cognitiva.</li>
+            <li class="help__item">Hinting completo: fuentes bien hintadas renderizan correctamente en tamaños pequeños sin depender de antialiasing del sistema.</li>
+            <li class="help__item">Soporte multi-idioma: glyphs para acentos, eñes y caracteres especiales son esenciales para contenido en español.</li>
+          </ul>
+
+          <h3 class="help__heading">Por dispositivo</h3>
+          <p class="help__text"><strong>Desktop (≥1024px)</strong> — Mayor densidad de píxeles por pulgada. Admite tipografías con mayor contraste y serifas más detalladas. Tamaños de cuerpo entre 16px y 18px. El kerning y las ligaduras se renderizan con precisión. Espaciado entre líneas de 1.4 a 1.7.</p>
+          <p class="help__text"><strong>Tablet (768px–1024px)</strong> — Densidad intermedia. Funcionan fuentes con altura x alta y contraste moderado. Tamaños de cuerpo entre 16px y 17px. El letter-spacing debe ser ligeramente más generoso que en desktop para compensar la menor densidad. Evitar fuentes con serifas demasiado finas.</p>
+          <p class="help__text"><strong>Móvil (≤480px)</strong> — Menor densidad física. Fuentes sans-serif con altura x alta, contadores abiertos y bajo contraste son ideales. Tamaños de cuerpo mínimo 16px para evitar zoom del navegador. line-height de 1.5 a 1.7. Evitar pesos lighter que 400 en cuerpo de texto. El letter-spacing debe ser neutro o ligeramente positivo.</p>
         </div>
-      </div>
-  
+      </section>
+
+      <section class="tabs__panel" id="tab-help" role="tabpanel">
+        <div class="help">
+          <h3 class="help__heading">Cómo funciona</h3>
+          <p class="help__text">Kerning Explorer te permite experimentar con propiedades tipográficas de CSS en tiempo real. Cargá una fuente desde Google Fonts o un archivo local, y ajustá los controles del panel izquierdo para ver los cambios al instante en el preview.</p>
+
+          <h3 class="help__heading">Elementos preview</h3>
+          <p class="help__text">Los tres elementos (h1, h2, p) se muestran simultáneamente. Seleccioná cuál editar con el selector "Elemento activo". El elemento seleccionado es el que responde a los controles del sidebar. Podés editar el texto directamente haciendo click en él.</p>
+
+          <h3 class="help__heading">Atajos de teclado</h3>
+          <dl class="help__shortcuts">
+            <div class="help__shortcut"><dt class="help__key">1</dt><dd>Seleccionar h1</dd></div>
+            <div class="help__shortcut"><dt class="help__key">2</dt><dd>Seleccionar h2</dd></div>
+            <div class="help__shortcut"><dt class="help__key">3</dt><dd>Seleccionar párrafo</dd></div>
+            <div class="help__shortcut"><dt class="help__key">K</dt><dd>Toggle font-kerning</dd></div>
+            <div class="help__shortcut"><dt class="help__key">L</dt><dd>Toggle ligaduras</dd></div>
+            <div class="help__shortcut"><dt class="help__key">R</dt><dd>Toggle text-rendering</dd></div>
+            <div class="help__shortcut"><dt class="help__key">N</dt><dd>Toggle oldstyle-nums</dd></div>
+            <div class="help__shortcut"><dt class="help__key">S</dt><dd>Compartir URL</dd></div>
+            <div class="help__shortcut"><dt class="help__key">Z</dt><dd>Restablecer todo</dd></div>
+            <div class="help__shortcut"><dt class="help__key">Esc</dt><dd>Cerrar panel (móvil)</dd></div>
+          </dl>
+
+          <h3 class="help__heading">Consejos</h3>
+          <ul class="help__list">
+            <li class="help__item">El valor de letter-spacing ideal para cuerpo de texto está entre -0.01em y 0.02em.</li>
+            <li class="help__item">font-kerning solo funciona con fuentes que incluyan tablas de kerning.</li>
+            <li class="help__item">text-rendering: optimizeLegibility es recomendado solo para titulares, no para textos largos.</li>
+            <li class="help__item">Podés compartir tu configuración con el botón "Compartir" — se genera una URL con todos los parámetros.</li>
+          </ul>
+        </div>
+      </section>
+
     </div>
   </main>
+
+  <footer class="footer">
+    <div class="footer__brand">
+      <img class="footer__logo" src="assets/img/logo.jpg" alt="Logo de Dystopia Workshop">
+      <span class="footer__name">Dystopia Workshop</span>
+    </div>
+    <a class="footer__link" href="https://github.com/manuelfernandezdg/tipografiaKerning" target="_blank" rel="noopener">github.com/manuelfernandezdg/tipografiaKerning</a>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
